@@ -1,4 +1,4 @@
-import React, {useEfect} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 import './TicTacToe.css';
@@ -74,10 +74,8 @@ const getWinner = tiles => {
 };
 
 const useTicTacToeGameState = initialPlayer => {
-  const tiles = ['','','','','','','','',''];
-  const currentPlayer = initialPlayer;
-  const winner = getWinner(tiles);
-  const gameEnded = false;
+  const [tiles, setTiles] = useState(['','','','','','','','','']);
+  const [currentPlayer, setCurrentPlayer] = useState(initialPlayer);
   const winnerRef = useRef(null)
   const gameEndedRef = useRef(false);
     winnerRef.current = getWinner(tiles);
@@ -92,24 +90,28 @@ const useTicTacToeGameState = initialPlayer => {
       setCurrentPlayer(player => player === 'X' ? 'O' : 'X');    
   };
   const restart = () => {
-    // Reiniciar el juego a su estado inicial
+    tiles.forEach((element,index) => {
+      tiles[index] = '';      
+    });// Reiniciar el juego a su estado inicial
+
   };
 
-  // por si no reconocen esta sintáxis, es solamente una forma más corta de escribir:
-  // { tiles: tiles, currentPlayer: currentPlayer, ...}
   return { tiles, currentPlayer, winner, gameEnded, setTileTo, restart };
 };
 
 const TicTacToe = () => {
   const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
-  useEfect(()=>{
-getWinner(tiles)
-
-  })
   return (
-    <div className="tictactoe">
+    <div className="tictactoe">      
       {tiles.map((casillero, index)=>{
-        <Square value={casillero} onClick={setTileTo(index,currentPlayer)} key={index} />
+        return (<Square 
+          value={casillero} 
+          onClick={(casillero === '') 
+            ? () => {
+              setTileTo(index,currentPlayer);} 
+            : undefined} 
+          key={index} 
+        />)
       })}
       
       {winner? console.log(winner):console.log(winner) }
