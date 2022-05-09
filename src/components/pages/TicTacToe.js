@@ -56,16 +56,17 @@ WinnerCard.propTypes = {
 };
 
 const getWinner = tiles => {
-  if(tiles[0] === tiles[1] === tiles[2] && tiles[0] !== '') return tiles[0];
-  if(tiles[3] === tiles[4] === tiles[5] && tiles[3] !== '') return tiles[3];
-  if(tiles[6] === tiles[7] === tiles[8] && tiles[6] !== '') return tiles[6];
 
-  if(tiles[0] === tiles[3] === tiles[6] && tiles[0] !== '') return tiles[0];
-  if(tiles[1] === tiles[4] === tiles[7] && tiles[1] !== '') return tiles[1];
-  if(tiles[2] === tiles[5] === tiles[8] && tiles[2] !== '') return tiles[2];
+  if((tiles[0] === tiles[1] === tiles[2]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[3] === tiles[4] === tiles[5]) && (tiles[3] !== '')) return tiles[3];
+  if((tiles[6] === tiles[7] === tiles[8]) && (tiles[6] !== '')) return tiles[6];
 
-  if(tiles[0] === tiles[4] === tiles[8] && tiles[0] !== '') return tiles[0];
-  if(tiles[2] === tiles[4] === tiles[6] && tiles[2] !== '') return tiles[2];  
+  if((tiles[0] === tiles[3] === tiles[6]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[1] === tiles[4] === tiles[7]) && (tiles[1] !== '')) return tiles[1];
+  if((tiles[2] === tiles[5] === tiles[8]) && (tiles[2] !== '')) return tiles[2];
+
+  if((tiles[0] === tiles[4] === tiles[8]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[2] === tiles[4] === tiles[6]) && (tiles[2] !== '')) return tiles[2];  
   // calcular el ganador del partido a partir del estado del tablero
   // (existen varias formas de calcular esto, una posible es listar todos los
   // casos en los que un jugador gana y ver si alguno sucede)
