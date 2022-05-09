@@ -80,9 +80,10 @@ const useTicTacToeGameState = initialPlayer => {
   const gameEnded = false;
 
   const setTileTo = (tileIndex, player) => {
-    // convertir el tile en la posición tileIndex al jugador seleccionado
-    // ejemplo: setTileTo(0, 'X') -> convierte la primera casilla en 'X'
-    tiles[tileIndex] = player
+      setTiles(tiles => tiles.map((element,index) => {
+      return index === tileIndex ? player : element
+    }));
+      setCurrentPlayer(player => player === 'X' ? 'O' : 'X');    
   };
   const restart = () => {
     // Reiniciar el juego a su estado inicial
