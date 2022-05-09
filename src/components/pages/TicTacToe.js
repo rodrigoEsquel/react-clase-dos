@@ -78,6 +78,12 @@ const useTicTacToeGameState = initialPlayer => {
   const currentPlayer = initialPlayer;
   const winner = getWinner(tiles);
   const gameEnded = false;
+  const winnerRef = useRef(null)
+  const gameEndedRef = useRef(false);
+    winnerRef.current = getWinner(tiles);
+  const winner = winnerRef.current;
+    gameEndedRef.current = !(winner === null);
+  const gameEnded = gameEndedRef.current ;
 
   const setTileTo = (tileIndex, player) => {
       setTiles(tiles => tiles.map((element,index) => {
@@ -105,8 +111,10 @@ getWinner(tiles)
       {tiles.map((casillero, index)=>{
         <Square value={casillero} onClick={setTileTo(index,currentPlayer)} key={index} />
       })}
-
-      {gameEnded && <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>}
+      
+      {winner? console.log(winner):console.log(winner) }
+      {gameEnded?'gameEnded true':'gameEnded false'}
+      <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>
     </div>
   );
 };
