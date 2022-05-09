@@ -12,10 +12,15 @@
 
 .tictactoe {
   position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  width: 310px;
+
 }
 
 .tictactoe-row {
   display: flex;
+
 }
 
 .winner-card {
