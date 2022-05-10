@@ -56,7 +56,9 @@ WinnerCard.propTypes = {
 };
 
 const getWinner = tiles => {
-
+  // calcular el ganador del partido a partir del estado del tablero
+  // (existen varias formas de calcular esto, una posible es listar todos los
+  // casos en los que un jugador gana y ver si alguno sucede)
   if((tiles[0] === tiles[1]) && (tiles[0] === tiles[2]) && (tiles[0] !== '')) return tiles[0];
   if((tiles[3] === tiles[4]) && (tiles[3] === tiles[5]) && (tiles[3] !== '')) return tiles[3];
   if((tiles[6] === tiles[7]) && (tiles[6] === tiles[8]) && (tiles[6] !== '')) return tiles[6];
@@ -67,9 +69,7 @@ const getWinner = tiles => {
 
   if((tiles[0] === tiles[4]) && (tiles[0] === tiles[8]) && (tiles[0] !== '')) return tiles[0];
   if((tiles[2] === tiles[4]) && (tiles[2] === tiles[6]) && (tiles[2] !== '')) return tiles[2];  
-  // calcular el ganador del partido a partir del estado del tablero
-  // (existen varias formas de calcular esto, una posible es listar todos los
-  // casos en los que un jugador gana y ver si alguno sucede)
+
   return null;
 };
 
@@ -84,6 +84,7 @@ const useTicTacToeGameState = initialPlayer => {
   });
   winnerRef.current = getWinner(tiles);
   gameEndedRef.current = !((winnerRef.current === null) && tiles.includes(''));
+
   const currentPlayer = currentPlayerRef.current;
   const winner = winnerRef.current;
   const gameEnded = gameEndedRef.current ;
@@ -95,11 +96,9 @@ const useTicTacToeGameState = initialPlayer => {
          
   };
   const restart = () => {
+    // Reiniciar el juego a su estado inicial
     setTiles(['','','','','','','','','']);
     currentPlayerRef.current = initialPlayer;
-  //  winnerRef.current = null;
-  //  gameEndedRef.current = false;
-  // Reiniciar el juego a su estado inicial
 
   };
 
@@ -110,16 +109,16 @@ const TicTacToe = () => {
   const { tiles, currentPlayer, winner, gameEnded, setTileTo, restart } = useTicTacToeGameState('X');
   return (
     <div className="tictactoe">      
-      {tiles.map((casillero, index)=>{
-        return (<Square 
+      {tiles.map((casillero, index)=> (
+        <Square 
           value={casillero} 
-          onClick={(casillero === '') 
-            ? () => {
-              setTileTo(index,currentPlayer);} 
-            : undefined} 
+          onClick={
+            (casillero === '') ?
+            () => {setTileTo(index,currentPlayer);} :
+            undefined} 
           key={index} 
         />)
-      })}      
+      )}      
       <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>
     </div>
   );
