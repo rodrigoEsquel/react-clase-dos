@@ -74,7 +74,8 @@ const getWinner = tiles => {
 };
 
 const useTicTacToeGameState = initialPlayer => {
-  const [tiles, setTiles] = useState(['','','','','','','','','']);
+  const initialTiles = ['','','','','','','','',''];
+  const [tiles, setTiles] = useState(initialTiles);
   const currentPlayerRef = useRef(initialPlayer);
   const winnerRef = useRef(null)
   const gameEndedRef = useRef(false);
@@ -97,7 +98,7 @@ const useTicTacToeGameState = initialPlayer => {
   };
   const restart = () => {
     // Reiniciar el juego a su estado inicial
-    setTiles(['','','','','','','','','']);
+    setTiles(initialTiles);
     currentPlayerRef.current = initialPlayer;
 
   };
