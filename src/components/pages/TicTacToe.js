@@ -57,16 +57,16 @@ WinnerCard.propTypes = {
 
 const getWinner = tiles => {
 
-  if((tiles[0] === tiles[1] === tiles[2]) && (tiles[0] !== '')) return tiles[0];
-  if((tiles[3] === tiles[4] === tiles[5]) && (tiles[3] !== '')) return tiles[3];
-  if((tiles[6] === tiles[7] === tiles[8]) && (tiles[6] !== '')) return tiles[6];
+  if((tiles[0] === tiles[1]) && (tiles[0] === tiles[2]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[3] === tiles[4]) && (tiles[3] === tiles[5]) && (tiles[3] !== '')) return tiles[3];
+  if((tiles[6] === tiles[7]) && (tiles[6] === tiles[8]) && (tiles[6] !== '')) return tiles[6];
 
-  if((tiles[0] === tiles[3] === tiles[6]) && (tiles[0] !== '')) return tiles[0];
-  if((tiles[1] === tiles[4] === tiles[7]) && (tiles[1] !== '')) return tiles[1];
-  if((tiles[2] === tiles[5] === tiles[8]) && (tiles[2] !== '')) return tiles[2];
+  if((tiles[0] === tiles[3]) && (tiles[0] === tiles[6]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[1] === tiles[4]) && (tiles[1] === tiles[7]) && (tiles[1] !== '')) return tiles[1];
+  if((tiles[2] === tiles[5]) && (tiles[2] === tiles[8]) && (tiles[2] !== '')) return tiles[2];
 
-  if((tiles[0] === tiles[4] === tiles[8]) && (tiles[0] !== '')) return tiles[0];
-  if((tiles[2] === tiles[4] === tiles[6]) && (tiles[2] !== '')) return tiles[2];  
+  if((tiles[0] === tiles[4]) && (tiles[0] === tiles[8]) && (tiles[0] !== '')) return tiles[0];
+  if((tiles[2] === tiles[4]) && (tiles[2] === tiles[6]) && (tiles[2] !== '')) return tiles[2];  
   // calcular el ganador del partido a partir del estado del tablero
   // (existen varias formas de calcular esto, una posible es listar todos los
   // casos en los que un jugador gana y ver si alguno sucede)
@@ -75,24 +75,31 @@ const getWinner = tiles => {
 
 const useTicTacToeGameState = initialPlayer => {
   const [tiles, setTiles] = useState(['','','','','','','','','']);
-  const [currentPlayer, setCurrentPlayer] = useState(initialPlayer);
+  const currentPlayerRef = useRef(initialPlayer);
   const winnerRef = useRef(null)
   const gameEndedRef = useRef(false);
-    winnerRef.current = getWinner(tiles);
+
+  useEffect(() => {
+    currentPlayerRef.current = currentPlayerRef.current === 'X' ? 'O' : 'X';   
+  });
+  winnerRef.current = getWinner(tiles);
+  gameEndedRef.current = !((winnerRef.current === null) && tiles.includes(''));
+  const currentPlayer = currentPlayerRef.current;
   const winner = winnerRef.current;
-    gameEndedRef.current = !(winner === null);
   const gameEnded = gameEndedRef.current ;
 
   const setTileTo = (tileIndex, player) => {
       setTiles(tiles => tiles.map((element,index) => {
       return index === tileIndex ? player : element
     }));
-      setCurrentPlayer(player => player === 'X' ? 'O' : 'X');    
+         
   };
   const restart = () => {
-    tiles.forEach((element,index) => {
-      tiles[index] = '';      
-    });// Reiniciar el juego a su estado inicial
+    setTiles(['','','','','','','','','']);
+    currentPlayerRef.current = initialPlayer;
+  //  winnerRef.current = null;
+  //  gameEndedRef.current = false;
+  // Reiniciar el juego a su estado inicial
 
   };
 
@@ -112,10 +119,7 @@ const TicTacToe = () => {
             : undefined} 
           key={index} 
         />)
-      })}
-      
-      {winner? console.log(winner):console.log(winner) }
-      {gameEnded?'gameEnded true':'gameEnded false'}
+      })}      
       <WinnerCard show={gameEnded} winner={winner} onRestart={restart}/>
     </div>
   );
