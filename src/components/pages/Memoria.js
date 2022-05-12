@@ -17,10 +17,10 @@ function Carta({color, estado, onClick = ()=>{}}) {
   return (
     <div 	  
       className={cx("card border border-dark m-1 ratio ratio-1x1 ", estado ==='oculto' ?
-                                                                    "bg-light" : 
+                                                                      "bg-light" : 
                                                                     estado ==='OK' ?
-                                                                    'invisible' : 
-                                                                    color
+                                                                      'invisible' : 
+                                                                      color
                                                                     )}
       onClick={onClick}
 	    style={{width: "20%"}}
