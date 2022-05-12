@@ -2,26 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
-function CuerpoCarta({estado, color}) {
-  return (
-    <CuerpoCarta 
-	  className={cx(
-      'card-body',
-      {'hidden': estado === 'oculto'},
-      {color}
-    )}
-	/>)
-}
-
 function Carta({color, estado, onClick = ()=>{}}) {
   return (
     <div 	  
-      className={cx("card border border-dark m-1 ratio ratio-1x1 ", estado ==='oculto' ?
-                                                                      "bg-light" : 
-                                                                    estado ==='OK' ?
-                                                                      'invisible' : 
-                                                                      color
-                                                                    )}
+      className={cx(
+        "card border border-dark m-1 ratio ratio-1x1 ",
+        (estado === 'oculto') && "bg-light",
+        (estado === 'seleccionado') && color,
+        (estado === 'emparejado') && 'invisible'                         
+      )}
       onClick={onClick}
 	    style={{width: "20%"}}
       name={color}
@@ -68,23 +57,40 @@ const useMemoriaState = (numeroPares) => {
       estado: 'oculto',
     }});
    const [cartas, setCartas] = useState(estadoInicial);
-  const anteriorCarta = useRef('');
+  
+ 
   function manejarClick (indiceCarta) {
-    setCartas(cartas => cartas.map((carta,indice) => {
-     return (indice === indiceCarta ? {...carta, estado: 'click'} : carta);
-    }))
+
+    const cartaAnterior = cartas.filter((carta) => carta.estado === 'seleccionado')?.[0];
+    
+    setCartas((cartas) => cartas.map((carta,indice) => (
+        indice === indiceCarta ? {...carta, estado: 'seleccionado'} : carta)
+    ));
+    
+    if(cartaAnterior) {
+      setTimeout(() => {
+        setCartas((cartas) => cartas.map((carta) => (
+          carta.estado === 'oculto' || carta.estado === 'emparejado' ?
+            carta :
+          cartaAnterior.color === cartas[indiceCarta].color ?
+            {...carta, estado: 'emparejado'} : 
+            {...carta, estado: 'oculto'}
+          )
+        ));
+      }, 500);
+    }
   }
 
-
-  return {cartas, manejarClick, anteriorCarta};
+  console.log('actualizacion de cartas',cartas);
+  return {cartas, manejarClick};
 }
 
 export default function Memoria() {
   const {cartas, manejarClick} = useMemoriaState(4);
   return (
-    <div className="memoria d-flex flex-wrap w-40 justify-content-center p-2">
+    <div className="memoria d-flex flex-wrap w-40 justify-content-center">
       {cartas.map(({color, estado},indice)=> (
-        <Carta key={indice} color={color} estado={estado} onClick={estado==='oculto' ? manejarClick(indice) : undefined } />)
+        <Carta key={indice} color={color} estado={estado} onClick={estado === 'oculto' ? () => {manejarClick(indice)} : undefined } />)
       )}
     </div>) 
 }
