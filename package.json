@@ -2,7 +2,7 @@
   "name": "react-clase-dos",
   "version": "0.1.0",
   "homepage": "https: //rodrigoesquel.github.io/react-clase-dos/",
-  "private": true,
+  "private": false,
   "dependencies": {
     "classnames": "^2.2.6",
     "react": "^16.12.0",
