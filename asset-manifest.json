@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/%20//rodrigoesquel.github.io/react-clase-dos/static/css/main.46cfb4fc.chunk.css",
+    "main.js": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/main.b37d1651.chunk.js",
+    "main.js.map": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/main.b37d1651.chunk.js.map",
+    "runtime-main.js": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/runtime-main.06db5658.js",
+    "runtime-main.js.map": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/runtime-main.06db5658.js.map",
+    "static/js/2.4ecacb68.chunk.js": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/2.4ecacb68.chunk.js",
+    "static/js/2.4ecacb68.chunk.js.map": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/2.4ecacb68.chunk.js.map",
+    "index.html": "/%20//rodrigoesquel.github.io/react-clase-dos/index.html",
+    "precache-manifest.f83a03fc494909853d932e0c6c755f29.js": "/%20//rodrigoesquel.github.io/react-clase-dos/precache-manifest.f83a03fc494909853d932e0c6c755f29.js",
+    "service-worker.js": "/%20//rodrigoesquel.github.io/react-clase-dos/service-worker.js",
+    "static/css/main.46cfb4fc.chunk.css.map": "/%20//rodrigoesquel.github.io/react-clase-dos/static/css/main.46cfb4fc.chunk.css.map",
+    "static/js/2.4ecacb68.chunk.js.LICENSE.txt": "/%20//rodrigoesquel.github.io/react-clase-dos/static/js/2.4ecacb68.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.06db5658.js",
+    "static/js/2.4ecacb68.chunk.js",
+    "static/css/main.46cfb4fc.chunk.css",
+    "static/js/main.b37d1651.chunk.js"
+  ]
+}
