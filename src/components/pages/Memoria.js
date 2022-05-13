@@ -140,7 +140,7 @@ const useMemoriaState = (cantidadParejas) => {
 }
 
 export default function Memoria() {
-  const {cartas, manejarClick, turnos, reset, timer} = useMemoriaState(2);
+  const {cartas, manejarClick, turnos, reset, timer} = useMemoriaState(4);
   return (
     <div id='memoria' className='d-flex flex-wrap w-50 justify-content-evenly'>
       <div id='display' className='d-flex flex-wrap w-30 justify-content-center'>{'Turnos: ' + turnos}</div>
