@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import cx from 'classnames';
 
@@ -17,6 +17,11 @@ function Carta({color, estado, onClick = ()=>{}}) {
     />
   )
 }
+Carta.propTypes = {
+  color: PropTypes.oneOf(['bg-primary','bg-secondary','bg-success','bg-danger','bg-warning','bg-info','bg-light','bg-dark']),
+  estado: PropTypes.oneOf(['oculto', 'seleccionado', 'emparejado']),
+  onClick: PropTypes.func,
+};
 
 function conseguirArrayAleatorio(numeroPares) {
   const pares = [];
@@ -57,15 +62,36 @@ const useMemoriaState = (cantidadParejas) => {
       estado: 'oculto',
     }});
   const [cartas, setCartas] = useState(estadoInicial);
+  const [timer, setTimer] = useState(0);
+  const [runTimer, setRunTimer] = useState(false);
   
   const turnosRef = useRef(0);
   const turnos = turnosRef.current;
   const animacion = useRef(false);
-  const tiempoRef = useRef(0);
-  const tiempo = tiempoRef.current;
-  const temporizador = useRef();
+  const intervalIdRef = useRef(null);
+  
+  useEffect(() => {
+    if(runTimer) {
+      intervalIdRef.current = setInterval(() => {
+        setTimer((timer) => timer += 1)
+      }, 1000);
+    }
+    return () => clearInterval(intervalIdRef.current)
+  } , [runTimer]
+  )
+
+  useEffect(() => {
+    const cartasEmparejadas = cartas.filter((carta) => carta.estado === 'emparejado');
+    if(cartasEmparejadas.length === (cantidadParejas*2)) {
+      clearInterval(intervalIdRef.current);
+
+    }    
+  } , [cartas,cantidadParejas]
+  )
+
 
   function manejarClick(indiceCarta) {
+    setRunTimer(true);
     if (!animacion.current) { // ver bug multiple seleccion de cartas
       const cartaAnterior = cartas.filter((carta) => carta.estado === 'seleccionado')?.[0];
     
@@ -93,19 +119,7 @@ const useMemoriaState = (cantidadParejas) => {
         }, 300);}
     }
   }
- 
-  useLayoutEffect(() => {
-    if ( true
-      //turnosRef.current === 1 && tiempoRef.current=== 0 
-      ) {
-      temporizador.current = setInterval(() => {
-        tiempoRef.current += 1;
-      }, 1000);
-    }
-    return () => clearInterval(temporizador.current);
-  }, 
-  [tiempo] 
-  )
+
 
 
  function reset() {
@@ -116,19 +130,21 @@ const useMemoriaState = (cantidadParejas) => {
     }));
     setCartas(nuevoEstadoInicial);
     turnosRef.current = 0;
-    clearInterval(temporizador.current);
+    clearInterval(intervalIdRef.current);
+    setTimer(0);
+    setRunTimer(false);
   }
 
 
-  return {cartas, manejarClick, turnos, reset, tiempo};
+  return {cartas, manejarClick, turnos, reset, timer};
 }
 
 export default function Memoria() {
-  const {cartas, manejarClick, turnos, reset, tiempo} = useMemoriaState(6);
+  const {cartas, manejarClick, turnos, reset, timer} = useMemoriaState(2);
   return (
     <div id='memoria' className='d-flex flex-wrap w-50 justify-content-evenly'>
-      <div id='display' className='d-flex flex-wrap w-30 justify-content-center'>{'turnos: ' + turnos}</div>
-      <div id='timer' className='d-flex flex-wrap w-30 justify-content-center'>{tiempo}</div>
+      <div id='display' className='d-flex flex-wrap w-30 justify-content-center'>{'Turnos: ' + turnos}</div>
+      <div id='display' className='d-flex flex-wrap w-30 justify-content-center'>{'Tiempo: ' + timer}</div>
       <button id='timer' className='d-flex flex-wrap w-30 justify-content-center' onClick={reset} type="button">'Reset'</button>
       <div id='container-cartas' className='d-flex flex-wrap w-100 justify-content-center'>
         {cartas.map(({color, estado},indice)=> (
